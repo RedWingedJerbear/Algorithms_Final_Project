@@ -3,12 +3,13 @@ import sys
 import time
 import networkx as nx
 import matplotlib.pyplot as plt
+from networkx.utils import UnionFind
 
 
-def minDistance(G, mst):
+def minDistance(G, subG):
     min_key = sys.maxsize
-    for edge in G.edges(mst):
-        if edge[1] not in mst:
+    for edge in G.edges(subG.nodes()):
+        if edge[1] not in subG.nodes():
             if G[edge[0]][edge[1]]['weight'] < min_key:
                 min_key = G[edge[0]][edge[1]]['weight']
                 min_edge = [edge[0], edge[1], min_key]
@@ -16,50 +17,85 @@ def minDistance(G, mst):
 
 
 def prim(G, pos):
-    mst = [0]
-    v = G.subgraph(0).copy()
+    subG = G.subgraph(0).copy()
     for i in range(1, G.number_of_nodes()):
-        edge = minDistance(G, mst)
-        v.add_edge(edge[0], edge[1], weight=edge[2])
-        v[edge[0]][edge[1]]['color'] = 'g'
-        mst.append(edge[1])
-        G.add_edge(edge[0], edge[1], weight=edge[2], color='g')
-        drawGraph(G, pos, mst)
+        edge = minDistance(G, subG)
+        subG.add_edge(edge[0], edge[1], weight=edge[2], color='g')
+        subG[edge[0]][edge[1]]['color'] = 'g'
+        drawGraph(G, pos, subG)
         plt.show()
-        time.sleep(2)
-    drawGraph(v, pos, mst)
+        time.sleep(1)
+    drawGraph(subG, pos, subG)
     plt.show()
-    return v
+    return subG
 
 
-def drawGraph(G, pos, mst=[0]):
-    plt.ion()
+def kruskal(G, pos):
+    subG = nx.empty_graph()
+    subsets = UnionFind()
+    edgelist = []
+    for edge in G.edges:
+        edgelist.append([edge[0], edge[1], G[edge[0]][edge[1]]['weight']])
+    edgelist.sort(key=lambda x: x[2])
+    i = 0
+    for edge in edgelist:
+        edge = edgelist[i]
+        if subsets[edge[0]] != subsets[edge[1]]:
+            subsets.union(edge[0], edge[1])
+            subG.add_edge(edge[0], edge[1], weight=edge[2], color='g')
+            drawGraph(G, pos, subG)
+            plt.show()
+            time.sleep(1)
+        i += 1
+    drawGraph(subG, pos, subG)
+    plt.show()
+    return subG
+
+
+def drawGraph(G, pos, subG=nx.empty_graph()):
     edges = G.edges()
     color_map = []
     for i in G.nodes():
-        if i not in mst:
+        if i not in subG:
             color_map.append('r')
         else:
             color_map.append('g')
-    edge_colors = [G[u][v]['color'] for u,v in edges]
-    nx.draw(G, pos, edges=edges, with_labels=True, node_color=color_map, edge_color=edge_colors)
+    edge_colors = []
+    for edge in edges:
+        if edge not in subG.edges():
+            edge_colors.append(G[edge[0]][edge[1]]['color'])
+        else:
+            edge_colors.append(subG[edge[0]][edge[1]]['color'])
+    nx.draw(G, pos, edges=edges, with_labels=True, node_size=80, node_color=color_map, edge_color=edge_colors, font_size=8)
     edge_labels = nx.get_edge_attributes(G, 'weight')
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=5)
     return pos
 
 
-n = int(input("Enter the number of nodes on the graph (> 4): "))
+n = int(sys.argv[1])
+algo = sys.argv[2]
 
-G = nx.random_regular_graph(4, n, seed=None)
+if n > 4:
+    G = nx.random_regular_graph(4, n, seed=None)
+elif n > 1:
+    G = nx.random_regular_graph(1, n, seed=None)
+elif n == 1:
+    G = nx.empty_graph()
+    G.add_node(0)
+else:
+    print("Number of nodes is less than 1")
+
 
 for (u, v) in G.edges():
     G[u][v]['weight'] = random.randint(1, n)
     G[u][v]['color'] = 'r'
-
-pos = nx.spring_layout(G)
+pos = nx.spring_layout(G, k=0.80, iterations=100)
 drawGraph(G, pos)
 plt.show()
 
-
-
-v =prim(G, pos)
+if algo == "prim":
+    v = prim(G, pos)
+elif algo == "kruskal":
+    v = kruskal(G, pos)
+else:
+    print("Invalid input")
