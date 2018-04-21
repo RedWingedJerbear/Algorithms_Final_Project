@@ -1,0 +1,657 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\usepackage{algorithm,algpseudocode}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Visualization of Prim's and Kruskal's MST Algorithms
+\end_layout
+
+\begin_layout Author
+Goutham Nerevetla & Jeremiah White
+\end_layout
+
+\begin_layout Date
+April 20, 2018
+\end_layout
+
+\begin_layout Section
+Background and Related Work
+\end_layout
+
+\begin_layout Standard
+Prim's and Kruskal's algorithms are two common solutions to finding the
+ Minimum Spanning Tree (MST) in a connected graph.
+ The MST is defined as the spanning tree of a given graph such that the
+ sum of the edges is minimum.
+ In this project we implemented both Prim's and Kruskal's algorithms with
+ a visualization of each at every iteration of the algorithm.
+ In completing this project we have gained a better understanding of each
+ algorithm.
+ The visualization aspect of the project serves to give a clearer picture
+ of the process by which each algorithm finds the MST, making learning the
+ algorithm simpler.
+\end_layout
+
+\begin_layout Subsection
+Prim's MST
+\end_layout
+
+\begin_layout Standard
+Prim's MST takes a graph and position as input; it prints and the returns
+ the MST.
+ Prim's finds the MST by finding the smallest weight edge such that u is
+ a node in the MST and v is not 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-2"
+
+\end_inset
+
+.
+ Prim's runs V times where V is the number of nodes in the graph.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+Function{prim}{G, pos}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State $subG 
+\backslash
+gets$ $copy$ $of$ $G$ $with$ $only$ $the$ $start$ $node$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+For{i in range 1 to number of nodes in G}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State $edge 
+\backslash
+gets$ $MINIMUMDISTANCE(G, subG)$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State $subG 
+\backslash
+gets$ $edge$ $with$ $color$ $=$ $'g'$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State $Draw$ $at$ $pos$ $and$ $show$ $the$ $Graph$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+EndFor
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return $subG$
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+EndFunction
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+State
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+Function{minimumdistance}{G, subG}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State $minKey 
+\backslash
+gets$ $largest$ $edge$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+For{u,v in G}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+If{node(u) in subG 
+\backslash
+textbf{
+\backslash
+&} node(v) not in subG 
+\backslash
+textbf{
+\backslash
+&} G[u][v]['weight] < minKey['weight']}
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $minKey 
+\backslash
+gets$ $G[u][v]$ 
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+EndIf	
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+EndFor
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return $minKey$
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+EndFunction
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Kruskal's MST
+\end_layout
+
+\begin_layout Standard
+Kruskal's MST takes a graph and position as input: it prints and returns
+ the MST.
+ Kruskal's finds the MST by creating subsets consisting of each node in
+ the graph, then sorting all of the edges in the graph by weight.
+ Then starting at the lowest weight edge, add the edge to the MST if the
+ edge connects two subsets 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-3"
+
+\end_inset
+
+.
+ The subset of the graph are created using the union-find data structure.
+ A union-find data structure allows us to create a grouping of disjointed
+ sets from the nodes in the graph, and quickly find if elements are in the
+ same set 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-1"
+
+\end_inset
+
+.
+ We can then merge sets when edges are added to the MST.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+Function{kruskal}{G, pos}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State $subG 
+\backslash
+gets$ $empty$ $graph$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State $subSets 
+\backslash
+gets$ $UnionFind()$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State $EdgeList 
+\backslash
+gets$ $sort(G)$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State $i 
+\backslash
+gets$ $0$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+While{selected edges < number of edges in G}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State $edge 
+\backslash
+gets$ $Edgelist[i]$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+If{subsets[edge[0]] not in subsets[edge[1]]}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State $union(edge[0], edge[1])$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State $subG 
+\backslash
+gets$ $edge$ $with$ $color$ $=$ $'g'$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State $Draw$ $at$ $pos$ $and$ $show$ $the$ $Graph$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+EndIf
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State $i++$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+EndWhile
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return $subG$
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+EndFunction
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Setup
+\end_layout
+
+\begin_layout Standard
+For this project we used Python 3.6, Developing using the PyCharm IDE.
+ We also used the NetworkX version 2.1 Python package to represent our graph
+ data structures.
+ We used matplotlib to draw our graphs.
+\end_layout
+
+\begin_layout Section
+Results
+\end_layout
+
+\begin_layout Standard
+We will look at how Prim and Kruskal each select edges to be added to the
+ MST by examining the first three iterations of each on a randomly generated
+ graph with 20 nodes.
+ With Prim's being on the left and Kruskal's on the right
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename MST02/Figure_1.png
+	width 8.6cm
+	height 8.6cm
+	keepAspectRatio
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename MST02/Figure_1-4.png
+	width 8.6cm
+	height 8.6cm
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename MST02/Figure_1-1.png
+	width 8.6cm
+	height 8.6cm
+	keepAspectRatio
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename MST02/Figure_1-5.png
+	width 8.6cm
+	height 8.6cm
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Graphics
+	filename MST02/Figure_1-2.png
+	width 8.6cm
+	height 8.6cm
+	keepAspectRatio
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename MST02/Figure_1-6.png
+	width 8.6cm
+	height 8.6cm
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conclusions
+\end_layout
+
+\begin_layout Standard
+As we can see from the six images above the two algorithms find the MST
+ in very different ways.
+ Prim's on the first iteration starting from node 0 selects the edge (0,
+ 3, 3) and adds it to the MST.
+ On the second iteration selects the (3, 16, 7) edge.
+ On the third iteration selects the (16, 15, 5) edge.
+ Kruskal's on the other hand first selects the (7, 9, 1) edge.
+ On the second iteration selects the (11, 14, 1) edge.
+ On the third iteration selects the (1, 17, 2) edge.
+ From the graph visualization it becomes clear the process each algorithm
+ take to find the MST.
+ Prim's is only selecting the smallest edge which is connected to nodes
+ in the MST.
+ On the other hand Kruskal's is starting with the smallest weight edges
+ and combining if the nodes are in separate sets.
+ Prim's appears to grow out form the start node, while Kruskal's combines
+ the separate sets over time.
+ We believe this project will be useful for any person that is interested
+ in learning how these algorithms work.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+
+\end_inset
+
+Bernard A.
+ Galler and Michael J.
+ Fisher.
+ 1964.
+ An improved equivalence algorithm.
+ Commun.
+ ACM 7, 5 (May 1964), 301-303.
+ DOI=http://dx.doi.org/10.1145/364099.364331 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-2"
+
+\end_inset
+
+R.
+ C.
+ Prim 1957.
+ Shortest connection networks and some generalizations.
+ The Bell System Technical Journal Volume: 36, Issue: 6,( Nov.
+ 1957 ) DOI=10.1002/j.1538-7305.1957.tb01515.x
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-3"
+
+\end_inset
+
+Joseph B.
+ Kruskal 1956.
+ On the shortest spanning subtree of a graph and the traveling salesman
+ problem.
+ Proc.
+ Amer.
+ Math.
+ Soc.
+ 7 (1956), 48-50.
+ DOI=https://doi.org/10.1090/S0002-9939-1956-0078686-7 
+\end_layout
+
+\end_body
+\end_document

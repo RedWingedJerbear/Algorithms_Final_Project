@@ -14,8 +14,7 @@ from networkx.utils import UnionFind
 def minDistance(G, subG):
     min_key = sys.maxsize
     for edge in G.edges(subG.nodes()):
-        if edge[1] not in subG.nodes():
-            if G[edge[0]][edge[1]]['weight'] < min_key:
+        if edge[1] not in subG.nodes() and G[edge[0]][edge[1]]['weight'] < min_key:
                 min_key = G[edge[0]][edge[1]]['weight']
                 min_edge = [edge[0], edge[1], min_key]
     return min_edge
@@ -26,10 +25,9 @@ def prim(G, pos):
     for i in range(1, G.number_of_nodes()):
         edge = minDistance(G, subG)
         subG.add_edge(edge[0], edge[1], weight=edge[2], color='g')
-        subG[edge[0]][edge[1]]['color'] = 'g'
         drawGraph(G, pos, subG)
         plt.show()
-        time.sleep(1)
+        #time.sleep(.5)
     drawGraph(subG, pos, subG)
     plt.show()
     return subG
@@ -50,7 +48,7 @@ def kruskal(G, pos):
             subG.add_edge(edge[0], edge[1], weight=edge[2], color='g')
             drawGraph(G, pos, subG)
             plt.show()
-            time.sleep(1)
+            #time.sleep(.5)
         i += 1
     drawGraph(subG, pos, subG)
     plt.show()
@@ -101,6 +99,9 @@ plt.show()
 if algo == "prim":
     v = prim(G, pos)
 elif algo == "kruskal":
+    v = kruskal(G, pos)
+elif algo == "both":
+    v = prim(G, pos)
     v = kruskal(G, pos)
 else:
     print("Invalid input")
