@@ -1,3 +1,8 @@
+'''
+This program will take the number of nodes and the algorithm to use as arguments, and generates a picture
+demonstrating the algorithm working its magic creating a Minimum Spanning Tree!
+'''
+
 import random
 import sys
 import time
@@ -5,7 +10,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from networkx.utils import UnionFind
 
-
+#returns the smallest edge that is not in the subgraph but connects to the node out side the subgraph
 def minDistance(G, subG):
     min_key = sys.maxsize
     for edge in G.edges(subG.nodes()):
@@ -15,7 +20,7 @@ def minDistance(G, subG):
                 min_edge = [edge[0], edge[1], min_key]
     return min_edge
 
-
+#Accepts the graph and the position and returns the MST generated using prim's algorithm.
 def prim(G, pos):
     subG = G.subgraph(0).copy()
     for i in range(1, G.number_of_nodes()):
@@ -29,7 +34,7 @@ def prim(G, pos):
     plt.show()
     return subG
 
-
+#takes in graph and position, then generates the MST using Kruskal's algorithm.
 def kruskal(G, pos):
     subG = nx.empty_graph()
     subsets = UnionFind()
@@ -51,7 +56,7 @@ def kruskal(G, pos):
     plt.show()
     return subG
 
-
+#Generates graph images
 def drawGraph(G, pos, subG=nx.empty_graph()):
     edges = G.edges()
     color_map = []
@@ -74,7 +79,7 @@ def drawGraph(G, pos, subG=nx.empty_graph()):
 
 n = int(sys.argv[1])
 algo = sys.argv[2]
-
+#Generates randoms graph.
 if n > 4:
     G = nx.random_regular_graph(4, n, seed=None)
 elif n > 1:
@@ -85,7 +90,7 @@ elif n == 1:
 else:
     print("Number of nodes is less than 1")
 
-
+#colors pre MST edges
 for (u, v) in G.edges():
     G[u][v]['weight'] = random.randint(1, n)
     G[u][v]['color'] = 'r'
