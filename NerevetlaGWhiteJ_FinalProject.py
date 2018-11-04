@@ -1,6 +1,6 @@
 '''
 This program will take the number of nodes and the algorithm to use as arguments, and generates a picture
-demonstrating the algorithm working its magic creating a Minimum Spanning Tree! It's good clean fun! No, really it is.
+demonstrating the algorithm working its magic creating a Minimum Spanning Tree!
 '''
 
 import random
